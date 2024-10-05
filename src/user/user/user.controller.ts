@@ -8,13 +8,21 @@ import {
     HttpCode, 
     HttpRedirectResponse, 
     Redirect,
-    Res
+    Res, 
 } from '@nestjs/common';
 
 import { Response } from 'express';
 
 @Controller('/api/user')
 export class UserController {
+
+    @Get('/view/hallo')
+    viewHallo(@Query('name') name: string, @Res() res: Response) {
+        res.render('index', { 
+            title: 'Template Engine', 
+            name: name
+        });
+    }
 
     @Get('/set-cookie')
     setCookie(@Query('name') name: string, @Res() response: Response) {
@@ -43,14 +51,11 @@ export class UserController {
 
     @Get('/hallo')
     async sayHallo(
-        @Query('firstName') firstName:string,
-        @Query('lastName') lastName:string,
-    ): Promise<object>{
-        return {
-            firstName: firstName,
-            lastName: lastName,
-        }
-    }
+        @Query('firstName') firstName: string,
+        @Query('lastName') lastName: string,
+    ): Promise<string> {
+        return `hallo ${firstName} ${lastName}`;
+    }    
 
     @Get('/:id')
     getById(
